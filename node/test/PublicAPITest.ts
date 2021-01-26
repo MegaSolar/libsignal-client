@@ -6,6 +6,16 @@
 import { assert } from 'chai';
 import * as SignalClient from '../index';
 
+SignalClient.initLogger(
+  SignalClient.LogLevel.Trace,
+  (level, target, fileOrNull, lineOrNull, message) => {
+    const targetPrefix = target ? '[' + target + '] ' : '';
+    const file = fileOrNull ?? '<unknown>';
+    const line = lineOrNull ?? 0;
+    console.log(targetPrefix + file + ':' + line + ': ' + message);
+  }
+);
+
 describe('SignalClient', () => {
   it('ECC signatures work', () => {
     const priv_a = SignalClient.PrivateKey.generate();
